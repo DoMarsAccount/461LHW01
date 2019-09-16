@@ -11,8 +11,30 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    public void countMe(View view) {
+        // Get the text view
+        TextView showCountTextView = (TextView) findViewById(R.id.locationField);
+
+        // Get the value of the text view.
+        String countString = showCountTextView.getText().toString();
+
+        // Convert value to a number and increment it.
+        Integer count = Integer.parseInt(countString);
+        count++;
+
+        // Display the new value in the text view.
+        showCountTextView.setText(count.toString());
+    }
+
+    public void updateWeather() {
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

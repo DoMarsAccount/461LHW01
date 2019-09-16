@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">HW01WeatherApp</string>
     <string name="action_settings">Settings</string>
+    <string name="tempField">temperature</string>
+    <string name="locationField">TextView</string>
+    <string name="humidityField">humidity</string>
+    <string name="windSpeedField">windSpeed</string>
+    <string name="precipitationField">precipitation</string>
 </resources>
