@@ -13,6 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/humidityField"
+        app:layout_constraintBottom_toTopOf="@+id/windSpeedField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/tempField"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/precipitationField"
+        app:layout_constraintBottom_toTopOf="@+id/humidityField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,6 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/windSpeedField"
+        app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +56,7 @@
         android:id="@+id/mapView"
         android:layout_width="407dp"
         android:layout_height="237dp"
+        app:layout_constraintBottom_toTopOf="@+id/tempField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +69,19 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/locationField"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/windSpeedField" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/searchButton"
+        android:onClick="searchLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

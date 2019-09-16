@@ -2,6 +2,14 @@ package com.example.hw01weatherapp;
 
 import android.os.Bundle;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.Response.Listener;
+import com.android.volley.Response.ErrorListener;
+import com.google.android.gms.common.api.Response;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -15,26 +23,35 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public void countMe(View view) {
+    public void searchLocation(View view) {
         // Get the text view
-        TextView showCountTextView = (TextView) findViewById(R.id.locationField);
+        TextView locationTextView = (TextView) findViewById(R.id.editText);
 
         // Get the value of the text view.
-        String countString = showCountTextView.getText().toString();
+        String location = locationTextView.getText().toString();
 
-        // Convert value to a number and increment it.
-        Integer count = Integer.parseInt(countString);
-        count++;
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBHw3QHkohfaXixBI1D1n3wSk5-i02ie98\n";
 
-        // Display the new value in the text view.
-        showCountTextView.setText(count.toString());
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+//                        textView.setText("Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                textView.setText("That didn't work!");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
-
-    public void updateWeather() {
-
-    }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
