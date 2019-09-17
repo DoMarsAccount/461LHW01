@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,54 +33,72 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchLocation(View view) {
         // Get the text view
-        TextView locationTextView = (TextView) findViewById(R.id.editText);
+        final TextView locationTextView = (TextView) findViewById(R.id.editText);
 
         // Get the value of the text view.
         String location = locationTextView.getText().toString();
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
+        final RequestQueue queue = Volley.newRequestQueue(this);
         String url ="https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBHw3QHkohfaXixBI1D1n3wSk5-i02ie98\n";
-
-//        // Request a string response from the provided URL.
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // Display the first 500 characters of the response string.
-//
-//                        // Get the text view
-//                        TextView temperatureTextView = (TextView) findViewById(R.id.tempField);
-//                        temperatureTextView.setText("Response is: "+ response.substring(0,500));
-//
-//                        // Update MapView
-//                        MapView mapView = (MapView) findViewById(R.id.mapView);
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-////                textView.setText("That didn't work!");
-//            }
-//        });
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                // Get the text view
-                TextView temperatureTextView = (TextView) findViewById(R.id.tempField);
 
                 try {
                     JSONObject results = (JSONObject) response.getJSONArray("results").get(0);
                     JSONObject geometry = (JSONObject) results.get("geometry");
                     JSONObject location = (JSONObject) geometry.get("location");
 
-                    String test = geometry.toString();
                     String latitude = location.get("lat").toString();
                     String longitude = location.get("lng").toString();
 
-                    temperatureTextView.setText("Response: " + test);
+                    // Get the text view
+                    TextView temperatureTextView = (TextView) findViewById(R.id.tempField);
+                    temperatureTextView.setText(location.toString());
+
+
+                    // Poll Dark Sky API with longitude and latitude
+                    String weatherURL = "https://api.darksky.net/forecast/bf8803cc5df58912a929bc9f692d03d5/" + latitude + "," + longitude;
+
+                    JsonObjectRequest weatherObjRequest = new JsonObjectRequest
+                            (Request.Method.GET, weatherURL, null, new Response.Listener<JSONObject>() {
+
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    // Get the text view
+                                    TextView temperatureTextView = (TextView) findViewById(R.id.tempField);
+                                    TextView precipTextView = (TextView) findViewById(R.id.textView5);
+                                    TextView humidityTextView = (TextView) findViewById(R.id.humidityField);
+                                    TextView windSpeedTextView = (TextView) findViewById(R.id.windSpeedField);
+
+                                    try {
+
+                                        JSONObject currently = (JSONObject) response.get("currently");
+
+                                        temperatureTextView.setText("Temperature: " + currently.get("temperature").toString());
+                                        precipTextView.setText("Precipitation: " + currently.get("precipProbability").toString());
+                                        humidityTextView.setText("Humidity: " + currently.get("humidity").toString());
+                                        windSpeedTextView.setText("Wind Speed: " + currently.get("windSpeed").toString());
+
+                                    } catch(Exception e) {
+
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    // TODO: Handle error
+
+                                }
+                            });
+
+                    queue.add(weatherObjRequest);
 
                 } catch(Exception e) {
 
